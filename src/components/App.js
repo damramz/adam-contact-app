@@ -15,6 +15,8 @@ function App() {
     []
     // JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) ?? []
   );
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
 
   //RetrieveContacts
   const retrieveContacts = async () => {
@@ -54,6 +56,21 @@ function App() {
     setContacts(newContactList);
   };
 
+  const searchHandler = (searchTerm) => {
+    setSearchTerm(searchTerm);
+    if (searchTerm !== "") {
+      const newContactList = contacts.filter((contact) => {
+        return Object.values(contact)
+          .join(" ")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
+      });
+      setSearchResults(newContactList);
+    } else {
+      setSearchResults(contacts);
+    }
+  };
+
   useEffect(() => {
     const getAllContacts = async () => {
       const allContacts = await retrieveContacts();
@@ -78,8 +95,10 @@ function App() {
             render={(props) => (
               <ContactList
                 {...props}
-                contacts={contacts}
+                contacts={searchTerm.length < 1 ? contacts : searchResults}
                 getContactId={removeContactHandler}
+                term={searchTerm}
+                searchKeyword={searchHandler}
               />
             )}
           />
