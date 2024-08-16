@@ -8,6 +8,7 @@ import AddContact from "./AddContact";
 import EditContact from "./EditContact";
 import ContactList from "./ContactList";
 import ContactDetail from "./ContactDetail";
+import ConfirmDelete from "./ConfirmDelete";
 
 function App() {
   const LOCAL_STORAGE_KEY = "contacts";
@@ -39,7 +40,7 @@ function App() {
 
   const updateContactHandler = async (contact) => {
     const response = await api.put(`/contacts/${contact.id}`, contact);
-    const { id, name, email } = response.data;
+    const { id } = response.data;
     setContacts(
       contacts.map((contact) => {
         return contact.id === id ? { ...response.data } : contact;
@@ -96,12 +97,19 @@ function App() {
               <ContactList
                 {...props}
                 contacts={searchTerm.length < 1 ? contacts : searchResults}
-                getContactId={removeContactHandler}
                 term={searchTerm}
                 searchKeyword={searchHandler}
               />
             )}
           />
+
+          <Route
+            path="/confirm-delete"
+            render={(props) => (
+              <ConfirmDelete {...props} getContactId={removeContactHandler} />
+            )}
+          />
+
           <Route
             path="/add"
             render={(props) => (

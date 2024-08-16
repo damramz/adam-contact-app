@@ -15,7 +15,7 @@ const ContactDetail = (props) => {
           <div className="description">{email}</div>
         </div>
       </div>
-      <div className="center-div">
+      <div className="ui container center aligned">
         <Link to="/">
           <button className="ui button blue">Back to Contact List</button>
         </Link>
