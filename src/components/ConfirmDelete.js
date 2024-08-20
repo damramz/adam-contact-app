@@ -1,17 +1,25 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useContactsCrud } from "../context/ContactsCrudContext";
 
 const ConfirmDelete = (props) => {
   console.log(props);
-  const history = useHistory();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { removeContactHandler } = useContactsCrud();
 
   const handleConfirm = () => {
-    props.getContactId(props.location.state.contact.id);
-    history.push("/");
+    removeContactHandler(location.state.contact.id);
+    navigate("/");
   };
 
+  // const handleConfirm = () => {
+  //   props.getContactId(props.location.state.contact.id);
+  //   history.push("/");
+  // };
+
   const handleCancel = () => {
-    history.goBack();
+    navigate(-1);
   };
 
   return (
